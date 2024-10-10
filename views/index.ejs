@@ -42,7 +42,7 @@
             });
 
             // Karena response type-nya blob, responsenya otomatis blob, ga perlu `new Blob` lagi
-            const blob = response.data;
+            const blob = new Blob([response.data]);
 
             const url = URL.createObjectURL(blob); // Ini URL untuk downloadnya
 

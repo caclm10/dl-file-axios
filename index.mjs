@@ -12,14 +12,28 @@ app.get("/", (_, res) => {
 app.get("/api/download", (_, res) => {
 
     // Send File
-    res.sendFile(`example.xlsx`, { root: `${process.cwd()}/storage` }, function (err) {
+    res.sendFile(`master_code_template.xlsx`, { root: `${process.cwd()}/storage` }, function (err) {
         if (err) {
             console.error("Error sending file:", err);
         } else {
-            console.log("Sent:", "example.xlsx");
+            console.log("Sent:", "master_code_template.xlsx");
         }
     });
 })
+
+const get = async ({
+    endpoint = "",
+    params = {},
+    addHeaders = {}
+}) => {
+    const res = await instance.get(endpoint, {
+        ...options,
+        headers: { ...instance.defaults.headers, ...addHeaders },
+        params
+    });
+
+    return res;
+}
 
 app.listen(3000, () => {
     console.log("server started on http://localhost:3000");
