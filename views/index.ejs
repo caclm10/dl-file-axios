@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download xlsx File</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+
+    <style>
+        .h-dvh {
+            height: 100dvh;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="h-dvh center">
+        <button id="downloadBtn" class="button is-primary">
+            <span class="icon">
+                <i class="fa-solid fa-download"></i>
+            </span>
+            <span>Download</span>
+        </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const downloadBtn = document.querySelector("#downloadBtn");
+
+        downloadBtn.addEventListener("click", async () => {
+            const response = await axios.get("/api/download", {
+                responseType: "blob", // Response type harus blob
+            });
+
+            // Karena response type-nya blob, responsenya otomatis blob, ga perlu `new Blob` lagi
+            const blob = response.data;
+
+            const url = URL.createObjectURL(blob); // Ini URL untuk downloadnya
+
+            // Element a (untuk download)
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = "example.xlsx"; // Ini nama filenya, ga harus sama dengan yang di server (renaming aja)
+            document.body.appendChild(a);
+            a.click();
+
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+
+</html>
